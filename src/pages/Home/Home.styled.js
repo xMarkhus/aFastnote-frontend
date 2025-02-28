@@ -32,12 +32,10 @@ export const NotesWrapper = styled.div`
   padding-bottom: 10px;
   max-width: 100%;
 
-  /* Garantir que as notas não encolham e o scrollbar apareça */
   & > * {
     flex-shrink: 0;
   }
 
-  /* Barra de rolagem */
   &::-webkit-scrollbar {
     height: 8px;
   }
@@ -50,13 +48,17 @@ export const NotesWrapper = styled.div`
 
 export const CreateNoteContainer = styled.div`
   margin-top: 20px;
-  max-width: 700px; /* Aumentei a largura do container */
+  max-width: 700px;
   width: 100%;
   background: #333233;
   padding: 20px;
   border-radius: 8px;
   color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+
+  @media (${theme.breakpoints.mobile}) {
+    width: 90%;
+  }
 `;
 
 export const InputTitle = styled.input`
@@ -68,12 +70,12 @@ export const InputTitle = styled.input`
   border-radius: 4px;
   margin-bottom: 10px;
   margin-top: 10px;
-  box-sizing: border-box; /* Garante que bordas não aumentem a largura */
+  box-sizing: border-box;
 `;
 
 export const QuillEditor = styled.div`
   width: 100%;
-  height: auto; /* Mantém um tamanho fixo */
+  height: auto;
   background: #090909;
   color: white;
   border: 2px solid #ffff56;
@@ -84,12 +86,12 @@ export const QuillEditor = styled.div`
   margin-top: 10px;
 
   .ql-toolbar {
-    background: #222; /* Cor do fundo da toolbar */
+    background: #222;
     border-radius: 4px 4px 0 0;
   }
 
   .ql-container {
-    height: 250px !important; /* Mantém a altura fixa */
+    height: 250px !important;
   }
 `;
 

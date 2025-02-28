@@ -1,15 +1,13 @@
 import { useState } from "react";
-import {
-  StyledButton,
-  StyledForm,
-  StyledFormContainer,
-  StyledInputField,
-  StyledTitleForm,
-  StyledUnderlined,
-} from "./Login.styled";
-import { data, Link, useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { login } from "../../api/authService";
 import { useAuth } from "../../contexts/AuthContext";
+import Form from "../../components/Form";
+import TitleForm from "../../components/TitleForm";
+import TextField from "../../components/TextField";
+import ButtonForm from "../../components/ButtonForm";
+import AuthRedirect from "../../components/AuthRedirect";
+import PageContainer from "../../components/PageContainer";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -41,12 +39,9 @@ const Login = () => {
   };
 
   return (
-    <StyledFormContainer>
-      <StyledForm onSubmit={handleSubmit}>
-        <div>
-          <StyledTitleForm>Faça o seu login</StyledTitleForm>
-          <StyledUnderlined></StyledUnderlined>
-        </div>
+    <PageContainer>
+      <Form onSubmit={handleSubmit}>
+        <TitleForm>Faça o seu login</TitleForm>
         {errorMessage && (
           <div
             style={{ color: "red", marginTop: "10px", marginBottom: "10px" }}
@@ -54,35 +49,30 @@ const Login = () => {
             {errorMessage}
           </div>
         )}
-        <StyledInputField>
-          <label htmlFor="username">Usuário</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </StyledInputField>
-        <StyledInputField>
-          <label htmlFor="password">Senha</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </StyledInputField>
-        <StyledButton type="submit" disabled={isLoading}>
-          {isLoading ? "Entrando..." : "Entrar"}
-        </StyledButton>
-        <span>
-          Ainda não possui um usuário?{" "}
-          <Link to={"/register"}>Registrar-se.</Link>
-        </span>
-      </StyledForm>
-    </StyledFormContainer>
+        <TextField
+          label="Usuário"
+          type="username"
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          label="Senha"
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <ButtonForm isLoading={isLoading} loadingText="Entrando...">
+          Entrar
+        </ButtonForm>
+        <AuthRedirect
+          message="Ainda não possui um usuário?"
+          linkTo="/register"
+          linkText="Registre-se."
+        />
+      </Form>
+    </PageContainer>
   );
 };
 

@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import {
-  StyledButton,
-  StyledForm,
-  StyledFormContainer,
-  StyledInputField,
-  StyledTitleForm,
-  StyledUnderlined,
-} from "./Register.styled";
-import { Link, useNavigate } from "react-router-dom";
+import PageContainer from "../../components/PageContainer";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../api/authService";
 import { toast } from "react-toastify";
+import Form from "../../components/Form";
+import TitleForm from "../../components/TitleForm";
+import TextField from "../../components/TextField";
+import ButtonForm from "../../components/ButtonForm";
+import AuthRedirect from "../../components/AuthRedirect";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,6 +51,8 @@ const Register = () => {
 
     if (!validationForm()) return;
 
+    setIsLoading(true);
+
     const { success, error } = await registerUser(
       username,
       password,
@@ -64,54 +65,47 @@ const Register = () => {
       toast.success("Usuário cadastrado com sucesso");
       navigate("/login");
     }
+    setIsLoading(false);
   };
 
   return (
-    <StyledFormContainer>
-      <StyledForm onSubmit={handleSubmit}>
-        <div>
-          <StyledTitleForm>Faça o seu cadastro</StyledTitleForm>
-          <StyledUnderlined></StyledUnderlined>
-        </div>
-        <StyledInputField>
-          <label htmlFor="username">Usuário</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </StyledInputField>
-        <StyledInputField>
-          <label htmlFor="password">Senha</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </StyledInputField>
-        <StyledInputField>
-          <label htmlFor="confirmPassword">Confirmação de senha</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </StyledInputField>
+    <PageContainer>
+      <Form onSubmit={handleSubmit}>
+        <TitleForm>Registrar-se</TitleForm>
+        <TextField
+          label="Usuário"
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          label="Senha"
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <TextField
+          label="Confirmar senha"
+          id="confirm_password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
         {error && (
           <div style={{ color: "red", marginTop: "10px" }}>{error}</div>
         )}
-        <StyledButton type="submit">Registrar</StyledButton>
-        <span>
-          Já possui um usuário? <Link to="/login">Faça login.</Link>
-        </span>
-      </StyledForm>
-    </StyledFormContainer>
+        <ButtonForm isLoading={isLoading} loadingText="Registrando...">
+          Registrar
+        </ButtonForm>
+        <AuthRedirect
+          message="Já possui uma conta?"
+          linkTo="/login"
+          linkText="Faça login."
+        />
+      </Form>
+    </PageContainer>
   );
 };
 

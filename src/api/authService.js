@@ -52,11 +52,9 @@ export const getUserProfile = async () => {
 
     const res = await api.get("/api/v1/user/profile/", {
       headers: {
-        Authorization: `Bearer ${token}`, // Passando o token no cabeçalho
+        Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log("Resposta da API:", res.data); // Adicionando log para inspecionar a resposta
 
     return { success: true, data: res.data };
   } catch (error) {
