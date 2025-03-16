@@ -11,6 +11,9 @@ import {
   StyledTitle,
   StyledLabel,
   HomeContainer,
+  StyledContainerSelect,
+  StyledSelect,
+  TagContainer,
 } from "./Home.styled";
 import {
   createOrUpdateNote,
@@ -18,12 +21,28 @@ import {
   noteDelete,
 } from "../../api/noteService";
 import { toast } from "react-toastify";
+import TagButton from "../../components/TagButton";
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [tag, setTag] = useState("pessoal");
   const [editingNote, setEditingNote] = useState(null);
+  const [selectedTag, setSelectedTag] = useState(null);
+
+  const TAGS = [
+    { value: "urgente", label: "Urgente", color: "red" },
+    { value: "estudo", label: "Estudo", color: "blue" },
+    { value: "ideia", label: "Ideia", color: "yellow" },
+    { value: "projeto", label: "Projeto", color: "purple" },
+    { value: "financeiro", label: "Financeiro", color: "green" },
+    { value: "pessoal", label: "Pessoal", color: "gray" },
+    { value: "trabalho", label: "Trabalho", color: "orange" },
+    { value: "lazer", label: "Lazer", color: "pink" },
+    { value: "saude", label: "Saúde", color: "teal" },
+    { value: "eventos", label: "Eventos", color: "cyan" },
+  ];
 
   useEffect(() => {
     fetchNotes();
@@ -42,7 +61,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      await createOrUpdateNote({ id: editingNote?.id, title, content });
+      await createOrUpdateNote({ id: editingNote?.id, title, content, tag });
       toast.success(
         editingNote
           ? "Nota atualizada com sucesso!"
@@ -63,6 +82,7 @@ const Home = () => {
     console.log("Editando nota:", note);
     setTitle(note.title);
     setContent(note.content);
+    setTag(note.tag);
     setEditingNote(note);
   };
 
@@ -77,6 +97,10 @@ const Home = () => {
       }
     }
   };
+
+  const filteredNotes = selectedTag
+    ? notes.filter((note) => note.tag === selectedTag)
+    : notes;
 
   const modules = {
     toolbar: [
@@ -115,9 +139,21 @@ const Home = () => {
 
   return (
     <HomeContainer>
+      <TagContainer>
+        {TAGS.map(({ value, label, color }) => (
+          <TagButton
+            key={value}
+            value={value}
+            color={color}
+            label={label}
+            onClick={() => setSelectedTag(selectedTag === value ? null : value)}
+            active={selectedTag === value}
+          />
+        ))}
+      </TagContainer>
       <StyledTitle>Notas</StyledTitle>
       <NotesWrapper>
-        {notes.map((note) => (
+        {filteredNotes.map((note) => (
           <Note
             key={note.id}
             note={note}
@@ -148,6 +184,16 @@ const Home = () => {
               required
             />
           </QuillEditor>
+          <StyledContainerSelect>
+            <StyledLabel>Tag</StyledLabel>
+            <StyledSelect value={tag} onChange={(e) => setTag(e.target.value)}>
+              {TAGS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </StyledSelect>
+          </StyledContainerSelect>
           <SubmitButton type="submit">
             {editingNote ? "Atualizar" : "Criar"} Nota
           </SubmitButton>

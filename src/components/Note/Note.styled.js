@@ -12,6 +12,7 @@ export const NoteContainer = styled.div`
   width: 250px;
   max-height: 250px;
   overflow: hidden;
+  position: relative;
 `;
 
 export const NoteContentContainer = styled.div`
@@ -24,7 +25,7 @@ export const NoteContentContainer = styled.div`
   padding-bottom: 10px;
   white-space: normal;
   word-wrap: break-word;
-  flex-grow: 1; /* Faz com que o conteúdo ocupe o espaço disponível */
+  flex-grow: 1;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -54,7 +55,7 @@ export const NoteTitle = styled.h3`
   font-size: 18px;
   color: #ffff00;
   margin-bottom: 5px;
-  word-wrap: break-word; /* Quebra palavras longas no título */
+  word-wrap: break-word;
 `;
 
 export const NoteContent = styled.div``;
@@ -66,14 +67,24 @@ export const NoteDate = styled.p`
 `;
 
 export const StyledFooterNote = styled.div`
-display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  margin-top: auto; /* Garante que o footer fique sempre na parte inferior */
+  margin-top: auto;
 `;
 
 export const StyledContainerActions = styled.div`
   display: flex;
   gap: 10px;
+`;
+
+export const TagIndicator = styled.span`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: ${({ color }) => color || "black"};
 `;

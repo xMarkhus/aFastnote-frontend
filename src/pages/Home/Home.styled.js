@@ -111,3 +111,44 @@ export const SubmitButton = styled.button`
     background: #ffff56;
   }
 `;
+
+export const StyledContainerSelect = styled.div`
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+`;
+
+export const StyledSelect = styled.select`
+  background-color: #ffff00;
+  padding: 5px;
+  border-radius: 4px;
+`;
+
+export const TagContainer = styled.section`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 100%;
+  padding-bottom: 10px;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ffff56;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  & > * {
+    flex-shrink: 0;
+  }
+`;
